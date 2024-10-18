@@ -12,30 +12,42 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
 
+    @State var showSplash = true
+
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+        Group {
+        if showSplash {
+            Splash()
+        } else {
+            NavigationSplitView {
+                List {
+                    ForEach(items) { item in
+                        NavigationLink {
+                            Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
+                        } label: {
+                            Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
+                        }
+                    }
+                    .onDelete(perform: deleteItems)
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        EditButton()
+                    }
+                    ToolbarItem {
+                        Button(action: addItem) {
+                            Label("Add Item", systemImage: "plus")
+                        }
                     }
                 }
-                .onDelete(perform: deleteItems)
+            } detail: {
+                Text("Select an item")
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+        }
+        }.onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                showSplash = false
             }
-        } detail: {
-            Text("Select an item")
         }
     }
 
@@ -59,3 +71,4 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
 }
+

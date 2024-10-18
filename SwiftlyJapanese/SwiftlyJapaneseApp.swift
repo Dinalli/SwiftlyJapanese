@@ -25,7 +25,7 @@ struct SwiftlyJapaneseApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Splash()
+            ContentView()
         }
         .modelContainer(sharedModelContainer)
     }
