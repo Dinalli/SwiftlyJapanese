@@ -9,13 +9,31 @@ import SwiftUI
 
 struct TrainlineProgressView: View {
 
-    var stops = [1...15]
+    var stops = ["早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+                 "早く日本",
+
+    ]
     var currentStop = 2
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
             LazyHStack(spacing: 0) {
-                ForEach(0...stops.count, id: \.self) { index in
+                ForEach(Array(stops.enumerated()), id: \.offset) { index, stop in
                     ZStack {
                         Circle()
                             .stroke(currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), lineWidth:currentStop == index ? 8 : 4)
@@ -23,8 +41,14 @@ struct TrainlineProgressView: View {
                             .background(.white)
                             .clipShape(Circle())
                         Text("\(index)")
+                        Text(stop)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16, weight: .heavy))
+                            .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5)
+                            .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5 )
+                            .offset(y: currentStop == index ? -40 : 30)
                     }
-
             if index == currentStop {
                 HorizontalLine()
                     .stroke(Color("JRGreenOn"), lineWidth: 26)
