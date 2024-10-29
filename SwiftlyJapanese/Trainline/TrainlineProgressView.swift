@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct TrainlineProgressView: View {
 
@@ -28,44 +29,87 @@ struct TrainlineProgressView: View {
                  "早く日本",
 
     ]
-    var currentStop = 2
+    @State var currentStop = 9
+    @State private var player: AVAudioPlayer?
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: true) {
-            LazyHStack(spacing: 0) {
-                ForEach(Array(stops.enumerated()), id: \.offset) { index, stop in
-                    ZStack {
-                        Circle()
-                            .stroke(currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), lineWidth:currentStop == index ? 8 : 4)
-                            .frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
-                            .background(.white)
-                            .clipShape(Circle())
-                        Text("\(index)")
-                        Text(stop)
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.white)
-                            .font(.system(size: 16, weight: .heavy))
-                            .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5)
-                            .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5 )
-                            .offset(y: currentStop == index ? -40 : 30)
+        ScrollViewReader { value in
+            ScrollView(.horizontal, showsIndicators: true) {
+                LazyHStack(spacing: 0) {
+                    ForEach(Array(stops.enumerated()), id: \.offset) { index, stop in
+                        ZStack {
+                            ZStack {
+                                if index == currentStop {
+                                    HStack(spacing: 0) {
+                                        HorizontalLine()
+                                            .stroke(Color("JRGreenOn"), lineWidth: 26)
+                                            .frame(width: 65, height: 26)
+                                        ArrowLine()
+                                            .fill(Color("JRGreenOn"))
+                                            .frame(width: 10, height: 26)
+                                        Spacer()
+                                    }
+                                    
+                                } else {
+                                    HorizontalLine()
+                                        .stroke(Color("JRGreen"), lineWidth: 26)
+                                        .frame(height: 26)
+                                }
+                            }
+                            VStack {
+                                if index == currentStop {
+                                    Image("ToriGate")
+                                        .resizable()
+                                        .frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
+                                } else {
+                                    ZStack(alignment: .center) {
+                                        Circle()
+                                            .stroke(currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), lineWidth:currentStop == index ? 8 : 4)
+                                            .frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
+                                            .background(.white)
+                                            .clipShape(Circle())
+                                        Text("\(index)")
+                                    }.frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
+                                        .offset(y: 12)
+                                }
+                                Text(stop)
+                                    .multilineTextAlignment(.center)
+                                    .foregroundStyle(.white)
+                                    .font(.system(size: 16, weight: .heavy))
+                                    .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5)
+                                    .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5 )
+                                    .offset(y: currentStop == index ? -80 : 20)
+                            }.onTapGesture {
+                                withAnimation {
+                                    currentStop = index
+                                    value.scrollTo(currentStop)
+                                    playSound()
+                                }
+                            }.frame(height: 35)
+                        }
                     }
-            if index == currentStop {
-                HorizontalLine()
-                    .stroke(Color("JRGreenOn"), lineWidth: 26)
-                    .frame(width: 35)
-                ArrowLine()
-                    .fill(Color("JRGreenOn"))
-                    .frame(width: 10, height: 26)
-
-            } else {
-                HorizontalLine()
-                    .stroke(Color("JRGreen"), lineWidth: 26)
-                    .frame(width: 45)
-            }
-        }
-            }
+                }
+                .onAppear() {
+                    withAnimation {
+                        value.scrollTo(currentStop)
+                    }
+                }
+            }.scrollIndicators(.hidden)
         }
     }
+    
+    func playSound() {
+        guard let soundURL = Bundle.main.url(forResource: "Bell", withExtension: "mp3") else {
+          return
+        }
+
+        do {
+          player = try AVAudioPlayer(contentsOf: soundURL)
+        } catch {
+          print("Failed to load the sound: \(error)")
+        }
+        player?.play()
+      }
 }
 
 struct HorizontalLine: Shape {
@@ -111,6 +155,7 @@ private func arrowTransform(lastPoint: CGPoint, previousPoint: CGPoint) -> CGAff
 #Preview {
     TrainlineProgressView()
 }
+
 
 
 

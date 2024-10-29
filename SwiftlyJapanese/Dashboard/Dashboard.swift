@@ -12,7 +12,7 @@ struct Dashboard: View {
         @State var welcomeOpacity = 1.0
         ZStack {
             Color("SplashBackground")
-            VStack {
+            VStack(spacing: 0) {
                 HStack {
                     Text("Hello, Andy!")
                         .multilineTextAlignment(.leading)
@@ -24,6 +24,10 @@ struct Dashboard: View {
                         .padding()
                     Spacer()
                 }
+                HStack {
+                    TrainlineProgressView()
+                }
+                .frame(height: 126)
                 Spacer()
             }
             .onAppear {
