@@ -26,8 +26,11 @@ struct Dashboard: View {
                 }
                 HStack {
                     TrainlineProgressView()
+                }.frame(height: 126)
+                HStack {
+                    WordQuestion()
                 }
-                .frame(height: 126)
+            
                 Spacer()
             }
             .onAppear {

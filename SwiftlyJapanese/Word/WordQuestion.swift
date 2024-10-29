@@ -13,17 +13,44 @@ struct WordQuestion: View {
     var body: some View {
         VStack {
             HStack {
-                Text("English word")
+                Button(action: {
+                    viewModel.playEnglishWordBack()
+                }, label: {
+                    Text("English word")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .font(.system(size: 26, weight: .heavy))
+                        .shadow(color: Color("JRGreenOn"), radius: 5)
+                        .shadow(color: Color("JRGreenOn"), radius: 5 )
+                })
+            }
+            Divider()
+            HStack {
+                Button(action: {
+                    viewModel.playJapaneseWordBack()
+                }, label: {
+                    Text("ラーメン")
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white)
+                        .font(.system(size: 26, weight: .heavy))
+                        .shadow(color: Color("JRGreenOn"), radius: 5)
+                        .shadow(color: Color("JRGreenOn"), radius: 5 )
+                })
             }
             HStack {
-                Text("Japanese word")
-            }
-            HStack {
-                Text("Listen")
+                Button(action: {
+                    viewModel.playJapaneseWordBack()
+                }, label: {
+                    Text("Listen")
+                })
                 Spacer()
-                Text("Playback")
+                Button(action: {
+                    viewModel.playJapaneseWordBack()
+                }, label: {
+                    Text("Playback")
+                })
             }
-        }
+        }.padding()
     }
 }
 
