@@ -39,21 +39,33 @@ struct TrainlineProgressView: View {
                     ForEach(Array(stops.enumerated()), id: \.offset) { index, stop in
                         ZStack {
                             ZStack {
-                                if index == currentStop {
-                                    HStack(spacing: 0) {
-                                        HorizontalLine()
-                                            .stroke(Color("JRGreenOn"), lineWidth: 26)
-                                            .frame(width: 65, height: 26)
-                                        ArrowLine()
-                                            .fill(Color("JRGreenOn"))
-                                            .frame(width: 10, height: 26)
-                                        Spacer()
-                                    }
+                                if index == 0 {
+                                    Image("bullettrainback")
+                                        .resizable()
+                                        .frame(width: 80, height: 26)
+                                } else if index == stops.count-1 {
+                                    Image("bullettrainback")
+                                        .resizable()
+                                        .scaleEffect(x: -1, y: 1)
+                                        .frame(width: 80, height: 26)
+//                                } else if index == currentStop {
+//                                    HStack(spacing: 0) {
+//                                        HorizontalLine()
+//                                            .stroke(Color("JRGreenOn"), lineWidth: 26)
+//                                            .frame(width: 65, height: 26)
+//                                        ArrowLine()
+//                                            .fill(Color("JRGreenOn"))
+//                                            .frame(width: 10, height: 26)
+//                                        Spacer()
+//                                    }
                                     
                                 } else {
-                                    HorizontalLine()
-                                        .stroke(Color("JRGreen"), lineWidth: 26)
-                                        .frame(height: 26)
+//                                    HorizontalLine()
+//                                        .stroke(Color("JRGreen"), lineWidth: 26)
+//                                        .frame(height: 26)
+                                    Image("carriage")
+                                        .resizable()
+                                        .frame(width: 80, height: 26)
                                 }
                             }
                             VStack {
@@ -71,7 +83,7 @@ struct TrainlineProgressView: View {
                                         Text("\(index)")
                                     }.frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
                                         .offset(y: 12)
-                                }
+                               }
                                 Text(stop)
                                     .multilineTextAlignment(.center)
                                     .foregroundStyle(.white)
