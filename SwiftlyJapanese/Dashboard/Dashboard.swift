@@ -30,7 +30,9 @@ struct Dashboard: View {
                 HStack {
                     WordQuestion()
                 }
-            
+                HStack {
+                    SpeechTranslationView()
+                }
                 Spacer()
             }
             .onAppear {
