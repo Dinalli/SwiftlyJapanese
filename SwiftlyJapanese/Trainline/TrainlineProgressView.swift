@@ -7,8 +7,11 @@
 
 import SwiftUI
 import AVFoundation
+import SwiftData
 
 struct TrainlineProgressView: View {
+    
+    @Query var cards: [JapanCardData]
 
     var stops = ["早く日本",
                  "早く日本",
@@ -107,6 +110,9 @@ struct TrainlineProgressView: View {
                     }
                 }
             }.scrollIndicators(.hidden)
+        }
+        .onAppear() {
+            print(cards.count)
         }
     }
     
