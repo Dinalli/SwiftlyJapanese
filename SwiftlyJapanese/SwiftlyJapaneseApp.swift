@@ -35,6 +35,14 @@ struct SwiftlyJapaneseApp: App {
                 // Check we haven't already added our users.
                 let descriptor = FetchDescriptor<JapanCardData>()
                 let existingCards = try container.mainContext.fetchCount(descriptor)
+                
+//                // remove to persist data
+//                do {
+//                    try container.mainContext.delete(model: JapanCardData.self)
+//                } catch {
+//                    print("Failed to delete all schools.")
+//                }
+//                
                 guard existingCards == 0 else { return }
                 
                 // Load and decode the JSON.

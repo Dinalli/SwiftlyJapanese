@@ -1,7 +1,100 @@
 [
   {
-    "english" : "hello",
-    "japanese" : "hello but in japanese",
+    "japanese":"いち",
+    "english": "zero",
+    "breakdown": "い (i)ち(chi)",
+    "phonetic": "Ichi",
+    "pass": false
+  },
+    {
+    "japanese":"いち",
+    "english": "one",
+    "breakdown": "い (i)ち(chi)",
+    "phonetic": "ichi",
+    "pass": false
+  },
+    {
+    "japanese":"に",
+    "english": "two",
+    "breakdown": "に (ni)",
+    "phonetic": "ni",
+    "pass": false
+  },
+    {
+    "japanese":"さん",
+    "english": "three",
+    "breakdown": "さ(sa) ん (n)",
+    "phonetic": "san",
+    "pass": false
+  },
+    {
+    "japanese":"よん",
+    "english": "four",
+    "breakdown": "よ(yo)ん(n)",
+    "phonetic": "yon",
+    "pass": false
+  },
+    {
+    "japanese":"ご",
+    "english": "five",
+    "breakdown": "ご (go",
+    "phonetic": "go",
+    "pass": false
+  },
+    {
+    "japanese":"ろく",
+    "english": "six",
+    "breakdown": "ろ(ro)く(ku)",
+    "phonetic": "roku",
+    "pass": false
+  },
+    {
+    "japanese":"なな",
+    "english": "seven",
+    "breakdown": "なな(nana)",
+    "phonetic": "nana",
+    "pass": false
+  },
+    {
+    "japanese":"はち",
+    "english": "eight",
+    "breakdown": "は(ha/wa)ち(chi)",
+    "phonetic": "hachi",
+    "pass": false
+  },
+    {
+    "japanese":"く",
+    "english": "nine",
+    "breakdown": "く(ku)",
+    "phonetic": "ku",
+    "pass": false
+  },
+    {
+    "japanese":"じゅう",
+    "english": "ten",
+    "breakdown": "じゅ(ju)う(u)",
+    "phonetic": "juu",
+    "pass": false
+  },
+      {
+    "japanese":"こんにちは",
+    "english": "hello",
+    "breakdown": "Kohn-nee-chee-wah",
+    "phonetic": "konichiwa",
+    "pass": false
+  },
+      {
+    "japanese":"おはようございます",
+    "english": "good morning",
+    "breakdown": "Oha-yo go-zai-ma-su",
+    "phonetic": "Ohayou gozaimasu",
+    "pass": false
+  },
+      {
+    "japanese":"ありがとう",
+    "english": "Thank you",
+    "breakdown": "Ah-ree-gah-toh",
+    "phonetic": "Arigatou",
     "pass": false
   }
-]
+ ]

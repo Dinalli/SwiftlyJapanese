@@ -11,108 +11,80 @@ import SwiftData
 
 struct TrainlineProgressView: View {
     
-    @Query var cards: [JapanCardData]
-
-    var stops = ["早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-                 "早く日本",
-
-    ]
-    @State var currentStop = 9
-    @State private var player: AVAudioPlayer?
-
+    var cards: [JapanCardData]
+    @Binding var currentCardIndex: Int
+    
     var body: some View {
         ScrollViewReader { value in
             ScrollView(.horizontal, showsIndicators: true) {
                 LazyHStack(spacing: 0) {
-                    ForEach(Array(stops.enumerated()), id: \.offset) { index, stop in
-                        ZStack {
-                            ZStack {
-                                if index == 0 {
-                                    Image("bullettrainback")
-                                        .resizable()
-                                        .frame(width: 80, height: 26)
-                                } else if index == stops.count-1 {
-                                    Image("bullettrainback")
-                                        .resizable()
-                                        .scaleEffect(x: -1, y: 1)
-                                        .frame(width: 80, height: 26)
-//                                } else if index == currentStop {
-//                                    HStack(spacing: 0) {
-//                                        HorizontalLine()
-//                                            .stroke(Color("JRGreenOn"), lineWidth: 26)
-//                                            .frame(width: 65, height: 26)
-//                                        ArrowLine()
-//                                            .fill(Color("JRGreenOn"))
-//                                            .frame(width: 10, height: 26)
-//                                        Spacer()
-//                                    }
-                                    
-                                } else {
-//                                    HorizontalLine()
-//                                        .stroke(Color("JRGreen"), lineWidth: 26)
-//                                        .frame(height: 26)
-                                    Image("carriage")
-                                        .resizable()
-                                        .frame(width: 80, height: 26)
-                                }
-                            }
-                            VStack {
-                                if index == currentStop {
-                                    Image("ToriGate")
-                                        .resizable()
-                                        .frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
-                                } else {
-                                    ZStack(alignment: .center) {
-                                        Circle()
-                                            .stroke(currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), lineWidth:currentStop == index ? 8 : 4)
-                                            .frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
-                                            .background(.white)
-                                            .clipShape(Circle())
-                                        Text("\(index)")
-                                    }.frame(width: currentStop == index ? 45: 30, height: currentStop == index ? 45: 30)
-                                        .offset(y: 12)
-                               }
-                                Text(stop)
-                                    .multilineTextAlignment(.center)
-                                    .foregroundStyle(.white)
-                                    .font(.system(size: 16, weight: .heavy))
-                                    .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5)
-                                    .shadow(color: currentStop == index ? Color("JRGreenOn") : Color("JRGreen"), radius: 5 )
-                                    .offset(y: currentStop == index ? -80 : 20)
-                            }.onTapGesture {
-                                withAnimation {
-                                    currentStop = index
-                                    value.scrollTo(currentStop)
-                                    playSound()
-                                }
-                            }.frame(height: 35)
-                        }
+                    ForEach(Array(cards.enumerated()), id: \.element) { index, card in
+                        CardProgressView(cards: cards, index: index, value: value, currentCard: card, currentCardIndex: $currentCardIndex)
                     }
                 }
                 .onAppear() {
                     withAnimation {
-                        value.scrollTo(currentStop)
+                        value.scrollTo(0)
                     }
                 }
             }.scrollIndicators(.hidden)
         }
         .onAppear() {
             print(cards.count)
+        }
+    }
+}
+
+struct CardProgressView: View {
+    var cards: [JapanCardData]
+    var index: Int
+    var value: ScrollViewProxy
+    var currentCard: JapanCardData
+    
+    @Binding var currentCardIndex: Int
+    @State private var player: AVAudioPlayer?
+    
+    var body: some View {
+        ZStack {
+            ZStack {
+                if index == 0 {
+                    Image("bullettrainback")
+                        .resizable()
+                        .frame(width: 80, height: 26)
+                } else if index == cards.count-1 {
+                    Image("bullettrainback")
+                        .resizable()
+                        .scaleEffect(x: -1, y: 1)
+                        .frame(width: 80, height: 26)
+                } else {
+                    Image("carriage")
+                        .resizable()
+                        .frame(width: 80, height: 26)
+                }
+            }
+            VStack {
+                if index == currentCardIndex {
+                    Image("ToriGate")
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .offset(y: 20)
+                }
+                ZStack(alignment: .center) {
+                    Circle()
+                        .stroke(currentCardIndex == index ? Color("JRGreenOn") : Color("JRGreen"), lineWidth: currentCardIndex == index ? 8 : 4)
+                        .frame(width: currentCardIndex == index ? 35: 30, height: currentCardIndex == index ? 35: 30)
+                        .background(.white)
+                        .clipShape(Circle())
+                    Text("\(index+1)").foregroundStyle(Color.black)
+                }.frame(width: currentCardIndex == index ? 35: 30, height: currentCardIndex == index ? 35: 30)
+                    .offset(y: currentCardIndex == index ? -60 : 0)
+            }.onTapGesture {
+                withAnimation {
+                    currentCardIndex = index
+                    value.scrollTo(currentCard)
+                    playSound()
+                }
+            }.frame(height: 35)
         }
     }
     
@@ -171,8 +143,9 @@ private func arrowTransform(lastPoint: CGPoint, previousPoint: CGPoint) -> CGAff
     }
 
 #Preview {
-    TrainlineProgressView()
+    TrainlineProgressView(cards: [JapanCardData(japanese: "こんにちは", english: "hello", breakdown: "Kohn-nee-chee-wah", phonetic: "konichiwa", pass: false)], currentCardIndex: .constant(0))
 }
+
 
 
 

@@ -10,42 +10,17 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [JapanCardData]
+    @Query private var cards: [JapanCardData]
 
     @State var showSplash = true
 
     var body: some View {
         Group {
-        if showSplash {
-            Splash()
-        } else {
-            Dashboard()
-        }
-//            NavigationSplitView {
-//                List {
-//                    ForEach(items) { item in
-//                        NavigationLink {
-//                            Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-//                        } label: {
-//                            Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-//                        }
-//                    }
-//                    .onDelete(perform: deleteItems)
-//                }
-//                .toolbar {
-//                    ToolbarItem(placement: .navigationBarTrailing) {
-//                        EditButton()
-//                    }
-//                    ToolbarItem {
-//                        Button(action: addItem) {
-//                            Label("Add Item", systemImage: "plus")
-//                        }
-//                    }
-//                }
-//            } detail: {
-//                Text("Select an item")
-//            }
-//        }
+            if showSplash {
+                Splash()
+            } else {
+                Dashboard(cards: cards)
+            }
         }.onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
                 showSplash = false

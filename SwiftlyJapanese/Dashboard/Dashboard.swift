@@ -8,42 +8,40 @@
 import SwiftUI
 
 struct Dashboard: View {
+    var cards: [JapanCardData]
+    @State var currentCardIndex = 0
+    
     var body: some View {
-        @State var welcomeOpacity = 1.0
         ZStack {
             Color("SplashBackground")
             VStack(spacing: 0) {
+                
+                    HStack {
+                        Text("Hello, Andy!")
+                            .multilineTextAlignment(.leading)
+                            .foregroundStyle(.white)
+                            .font(.system(size: 40, weight: .heavy))
+                            .shadow(color: .green, radius: 5)
+                            .shadow(color: .green, radius: 5 )
+                            .padding()
+                        Spacer()
+                    }
+                
                 HStack {
-                    Text("Hello, Andy!")
-                        .multilineTextAlignment(.leading)
-                        .foregroundStyle(.white)
-                        .font(.system(size: 40, weight: .heavy))
-                        .shadow(color: .green, radius: 5)
-                        .shadow(color: .green, radius: 5 )
-                        .opacity(welcomeOpacity)
-                        .padding()
-                    Spacer()
-                }
-                HStack {
-                    TrainlineProgressView()
+                    TrainlineProgressView(cards: cards, currentCardIndex: $currentCardIndex)
                 }.frame(height: 126)
                 HStack {
-                    WordQuestion()
+                    WordQuestion(cards: cards, currentCardIndex: $currentCardIndex)
                 }
                 HStack {
-                    SpeechTranslationView()
+                    SpeechTranslationView(cards: cards, currentCardIndex: $currentCardIndex)
                 }
                 Spacer()
-            }
-            .onAppear {
-                withAnimation(.easeInOut(duration: 13)) {
-                    welcomeOpacity = 0.0
-                }
             }
         }
     }
 }
 
 #Preview {
-    Dashboard()
+    Dashboard(cards: [JapanCardData(japanese: "こんにちは", english: "hello", breakdown: "Kohn-nee-chee-wah", phonetic: "konichiwa", pass: false)])
 }
